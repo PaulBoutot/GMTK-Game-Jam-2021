@@ -1,0 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GrabController : MonoBehaviour
+{
+    public Transform grabDetect;
+    public Transform boxHolder;
+    public float rayDist;
+    public bool isHolding = false;
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        RaycastHit2D grabCheck = Physics2D.Raycast(grabDetect.position, Vector2.right * transform.localScale, rayDist);
+
+        if(grabCheck.collider != null && grabCheck.collider.tag == "Box")
+        {
+            if(Input.GetKey(KeyCode.G))
+            {
+                grabCheck.collider.gameObject.transform.parent = boxHolder;
+                grabCheck.collider.gameObject.transform.position = boxHolder.position;
+                grabCheck.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                print(isHolding);
+                isHolding = true;
+                print(isHolding);
+
+            }
+            else
+            {
+                grabCheck.collider.gameObject.transform.parent = null;
+                grabCheck.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                
+            }
+
+            if (isHolding)
+            {
+                print(isHolding);
+                if (Input.GetKey(KeyCode.G))
+                {
+                    grabCheck.collider.gameObject.transform.parent = null;
+                    grabCheck.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                    isHolding = false;
+                    print(isHolding);
+                }
+
+            }
+
+        }
+        
+
+
+
+
+
+
+
+    }
+}
