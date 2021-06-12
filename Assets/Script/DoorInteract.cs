@@ -4,15 +4,44 @@ using UnityEngine;
 
 public class DoorInteract : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject doorGameObject;
+    private IDoor door;
+    private float timer;
+
+    private void Awake()
     {
-        
+        door = doorGameObject.GetComponent<IDoor>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if(timer > 0)
+        {
+            timer -= Time.deltaTime;
+            if(timer <= 0f)
+            {
+                door.CloseDoor();
+            }
+        }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (GetComponent<CharacterController2D>() != null)
+        {
+            door.OpenDoor();
+            timer = 1f;
+        }
+    
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (GetComponent<CharacterController2D>() != null)
+        {
+            timer = 1f;
+        }
+      
+    }
+
 }
